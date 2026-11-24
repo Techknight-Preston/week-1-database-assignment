@@ -1,46 +1,42 @@
 -- ==========================================
--- ADVANCED SQL QUERIES AND AGGREGATIONS
+-- WEEK 6: SQL JOINS AND RELATIONSHIPS
 -- Database: sales
 -- ==========================================
 
 USE sales;
 
--- QUESTION 1: Total payment amount per payment date
+-- QUESTION 1: INNER JOIN - Employees and Offices
 
 SELECT
-    paymentDate,
-    SUM(amount) AS total_amount
-FROM payments
-GROUP BY paymentDate
-ORDER BY paymentDate DESC
-LIMIT 5;
+    e.firstName,
+    e.lastName,
+    e.email,
+    e.officeCode
+FROM employees e
+INNER JOIN offices o
+    ON e.officeCode = o.officeCode;
 
 
--- QUESTION 2: Average credit limit per customer
-
-SELECT
-    customerName,
-    country,
-    AVG(creditLimit) AS average_credit_limit
-FROM customers
-GROUP BY customerName, country;
-
-
--- QUESTION 3: Total price of products ordered
+-- QUESTION 2: LEFT JOIN - Products and Product Lines
 
 SELECT
-    productCode,
-    quantityOrdered,
-    SUM(priceEach * quantityOrdered) AS total_price
-FROM orderdetails
-GROUP BY productCode, quantityOrdered;
+    p.productName,
+    p.productVendor,
+    p.productLine
+FROM products p
+LEFT JOIN productlines pl
+    ON p.productLine = pl.productLine;
 
 
--- QUESTION 4: Highest payment amount per check number
+-- QUESTION 3: RIGHT JOIN - Customers and Orders
 
 SELECT
-    checkNumber,
-    MAX(amount) AS highest_amount
-FROM payments
-GROUP BY checkNumber;
-
+    o.orderDate,
+    o.shippedDate,
+    o.status,
+    o.customerNumber
+FROM customers c
+RIGHT JOIN orders o
+    ON c.customerNumber = o.customerNumber
+ORDER BY o.orderNumber ASC
+LIMIT 10;
