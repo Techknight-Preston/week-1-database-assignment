@@ -1,53 +1,25 @@
+-- QUESTION 1: Create student table
 
--- ==========================================
--- WEEK 2 SQL ASSIGNMENT
--- Database: sales
--- ==========================================
+CREATE TABLE student (
+    id INT PRIMARY KEY,
+    fullName VARCHAR(100),
+    age INT
+);
 
--- QUESTION 1: Retrieve Payment Information
+-- QUESTION 2: Insert three records
 
-USE sales;
+INSERT INTO student (id, fullName, age)
+VALUES
+    (1, 'John Kamau', 19),
+    (2, 'Mary Wanjiku', 18),
+    (3, 'Peter Mwangi', 21);
 
-SELECT
-    checkNumber,
-    paymentDate,
-    amount
-FROM payments;
+-- QUESTION 3: Update student ID 2 age to 20
 
+UPDATE student
+SET age = 20
+WHERE id = 2;
 
--- QUESTION 2: Find Orders in Process
+-- Verify the records
 
-SELECT
-    orderDate,
-    requiredDate,
-    status
-FROM orders
-WHERE status = 'In Process'
-ORDER BY orderDate DESC;
-
-
--- QUESTION 3: Find Sales Representatives
-
-SELECT
-    firstName,
-    lastName,
-    email
-FROM employees
-WHERE jobTitle = 'Sales Rep'
-ORDER BY employeeNumber DESC;
-
-
--- QUESTION 4: Retrieve Office Information
-
-SELECT *
-FROM offices;
-
-
--- QUESTION 5: Retrieve the Five Cheapest Products
-
-SELECT
-    productName,
-    quantityInStock
-FROM products
-ORDER BY buyPrice ASC
-LIMIT 5;
+SELECT * FROM student;
