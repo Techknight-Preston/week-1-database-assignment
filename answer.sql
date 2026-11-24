@@ -1,91 +1,46 @@
 
--- ==========================================
--- DATABASE DESIGN AND NORMALIZATION
--- Questions 1 and 2
--- ==========================================
-
-CREATE DATABASE IF NOT EXISTS normalization_db;
-USE normalization_db;
+-- =====================================================
+-- MYSQL DATABASE BACKUP OPERATIONS
+-- Database: sales
+-- =====================================================
 
 
--- ==========================================
--- QUESTION 1: ACHIEVING FIRST NORMAL FORM (1NF)
--- ==========================================
-
--- Remove the previous assignment table if it exists
-DROP TABLE IF EXISTS ProductDetail_1NF;
-
--- Create a normalized table
-CREATE TABLE ProductDetail_1NF (
-    OrderID INT NOT NULL,
-    CustomerName VARCHAR(100) NOT NULL,
-    Product VARCHAR(100) NOT NULL,
-    PRIMARY KEY (OrderID, Product)
-);
-
--- Insert one product per row
-INSERT INTO ProductDetail_1NF
-    (OrderID, CustomerName, Product)
-VALUES
-    (101, 'John Doe', 'Laptop'),
-    (101, 'John Doe', 'Mouse'),
-    (102, 'Jane Smith', 'Tablet'),
-    (102, 'Jane Smith', 'Keyboard'),
-    (102, 'Jane Smith', 'Mouse'),
-    (103, 'Emily Clark', 'Phone');
+-- QUESTION 1: CREATING A COMPLETE DATABASE BACKUP
+--
+-- Command:
+-- mysqldump -u root -p sales > sales_backup.sql
+--
+-- Explanation:
+-- mysqldump is a MySQL command-line utility used to
+-- create database backups.
+-- -u root specifies the MySQL root username.
+-- -p prompts the user to enter the database password.
+-- sales specifies the database to be backed up.
+-- > redirects the backup output into a file.
+-- sales_backup.sql is the backup filename.
+--
+-- Importance of regular database backups:
+-- Regular backups protect against accidental data
+-- deletion, hardware failure, database corruption and
+-- unexpected system failures. They allow databases
+-- to be restored when data is lost.
 
 
--- Display the 1NF results
-SELECT * FROM ProductDetail_1NF;
-
-
--- ==========================================
--- QUESTION 2: ACHIEVING SECOND NORMAL FORM (2NF)
--- ==========================================
-
--- Partial dependency:
--- CustomerName depends only on OrderID,
--- not on the entire composite key (OrderID, Product).
--- Therefore, customer information is separated into Orders.
-
--- Remove existing assignment tables if they exist
-DROP TABLE IF EXISTS OrderItems;
-DROP TABLE IF EXISTS Orders;
-
--- Create Orders table
-CREATE TABLE Orders (
-    OrderID INT PRIMARY KEY,
-    CustomerName VARCHAR(100) NOT NULL
-);
-
--- Create OrderItems table
-CREATE TABLE OrderItems (
-    OrderID INT NOT NULL,
-    Product VARCHAR(100) NOT NULL,
-    Quantity INT NOT NULL,
-    PRIMARY KEY (OrderID, Product),
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
-);
-
--- Insert order information
-INSERT INTO Orders (OrderID, CustomerName)
-VALUES
-    (101, 'John Doe'),
-    (102, 'Jane Smith'),
-    (103, 'Emily Clark');
-
--- Insert product and quantity information
-INSERT INTO OrderItems (OrderID, Product, Quantity)
-VALUES
-    (101, 'Laptop', 2),
-    (101, 'Mouse', 1),
-    (102, 'Tablet', 3),
-    (102, 'Keyboard', 1),
-    (102, 'Mouse', 2),
-    (103, 'Phone', 1);
-
-
--- Display the 2NF results
-SELECT * FROM Orders;
-
-SELECT * FROM OrderItems;
+-- QUESTION 2: BACKING UP ALL DATABASES
+--
+-- Command:
+-- mysqldump -u root -p --all-databases > all_databases_backup.sql
+--
+-- Explanation:
+-- mysqldump is used to export MySQL databases.
+-- -u root specifies the MySQL root username.
+-- -p prompts for the database password.
+-- --all-databases exports all databases on the server.
+-- > redirects the output into a backup file.
+-- all_databases_backup.sql is the backup filename.
+--
+-- Importance before server migration:
+-- Backing up all databases ensures that database
+-- structures and data can be transferred to the new
+-- server. It reduces the risk of data loss and supports
+-- recovery if migration fails.
