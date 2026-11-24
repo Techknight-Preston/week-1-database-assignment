@@ -1,25 +1,46 @@
--- QUESTION 1: Create student table
+-- ==========================================
+-- ADVANCED SQL QUERIES AND AGGREGATIONS
+-- Database: sales
+-- ==========================================
 
-CREATE TABLE student (
-    id INT PRIMARY KEY,
-    fullName VARCHAR(100),
-    age INT
-);
+USE sales;
 
--- QUESTION 2: Insert three records
+-- QUESTION 1: Total payment amount per payment date
 
-INSERT INTO student (id, fullName, age)
-VALUES
-    (1, 'John Kamau', 19),
-    (2, 'Mary Wanjiku', 18),
-    (3, 'Peter Mwangi', 21);
+SELECT
+    paymentDate,
+    SUM(amount) AS total_amount
+FROM payments
+GROUP BY paymentDate
+ORDER BY paymentDate DESC
+LIMIT 5;
 
--- QUESTION 3: Update student ID 2 age to 20
 
-UPDATE student
-SET age = 20
-WHERE id = 2;
+-- QUESTION 2: Average credit limit per customer
 
--- Verify the records
+SELECT
+    customerName,
+    country,
+    AVG(creditLimit) AS average_credit_limit
+FROM customers
+GROUP BY customerName, country;
 
-SELECT * FROM student;
+
+-- QUESTION 3: Total price of products ordered
+
+SELECT
+    productCode,
+    quantityOrdered,
+    SUM(priceEach * quantityOrdered) AS total_price
+FROM orderdetails
+GROUP BY productCode, quantityOrdered;
+
+
+-- QUESTION 4: Highest payment amount per check number
+
+SELECT
+    checkNumber,
+    MAX(amount) AS highest_amount
+FROM payments
+GROUP BY checkNumber;
+
